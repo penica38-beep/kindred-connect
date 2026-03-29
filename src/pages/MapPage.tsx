@@ -54,15 +54,24 @@ function FlyToLocation({ lat, lng, zoom }: { lat: number; lng: number; zoom: num
   return null;
 }
 
-function AutoOpenPopup({ reportId, markerRefs }: { reportId: string; markerRefs: React.MutableRefObject<Record<string, L.Marker>> }) {
+function AutoOpenPopup({ reportId, markerRefs, reports }: { reportId: string; markerRefs: React.MutableRefObject<Record<string, L.Marker>>; reports: Report[] }) {
   const map = useMap();
   useEffect(() => {
-    if (reportId && markerRefs.current[reportId]) {
-      setTimeout(() => {
-        markerRefs.current[reportId]?.openPopup();
-      }, 1200);
-    }
-  }, [reportId, map]);
+    if (!reportId) return;
+    // Retry until marker ref is available (reports may still be loading)
+    let attempts = 0;
+    const interval = setInterval(() => {
+      attempts++;
+      if (markerRefs.current[reportId]) {
+        clearInterval(interval);
+        setTimeout(() => {
+          markerRefs.current[reportId]?.openPopup();
+        }, 300);
+      }
+      if (attempts > 30) clearInterval(interval);
+    }, 200);
+    return () => clearInterval(interval);
+  }, [reportId, map, reports.length]);
   return null;
 }
 
