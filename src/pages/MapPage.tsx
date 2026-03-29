@@ -184,7 +184,7 @@ function ReportPopupContent({ report, navigate }: { report: Report; navigate: (p
       <div style={{ display: "flex", gap: 6 }}>
         <button
           onClick={() => navigate(`/report/${report.id}`)}
-          style={{ flex: 1, background: "#FF3B30", color: "white", padding: "7px 10px", borderRadius: 9, fontSize: 12, fontWeight: 700, border: "none", cursor: "pointer", letterSpacing: "0.01em" }}
+          style={{ flex: 1, background: "#DC3545", color: "white", padding: "7px 10px", borderRadius: 9, fontSize: 12, fontWeight: 700, border: "none", cursor: "pointer", letterSpacing: "0.01em" }}
         >
           বিস্তারিত →
         </button>
