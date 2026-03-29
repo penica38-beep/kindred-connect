@@ -72,8 +72,10 @@ function UserLocationMarker() {
   useEffect(() => {
     const watchId = navigator.geolocation.watchPosition(
       (p) => setPos([p.coords.latitude, p.coords.longitude]),
-      () => {},
-      { enableHighAccuracy: true }
+      (err) => {
+        console.warn("Geolocation watch error:", err.message);
+      },
+      { enableHighAccuracy: true, maximumAge: 0 }
     );
     return () => navigator.geolocation.clearWatch(watchId);
   }, []);
