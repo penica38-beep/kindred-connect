@@ -7,13 +7,6 @@ import { addReport, uploadToImgBB } from "@/lib/reports";
 import { CORRUPTION_TYPES } from "@/lib/constants";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import { OnboardingGuide } from "@/components/OnboardingGuide";
-
-const ADDREPORT_ONBOARDING_STEPS = [
-  { icon: "📝", title: "রিপোর্ট করুন!", description: "ধাপে ধাপে দুর্নীতির ঘটনা রিপোর্ট করুন। আপনার পরিচয় সম্পূর্ণ গোপন থাকবে।" },
-  { icon: "📍", title: "লোকেশন দিন", description: "GPS বাটন চাপুন অথবা ম্যাপ থেকে সঠিক জায়গা বেছে নিন।" },
-  { icon: "📸", title: "প্রমাণ যুক্ত করুন", description: "ছবি আপলোড বা লিংক যোগ করুন। প্রমাণ থাকলে রিপোর্ট বেশি বিশ্বাসযোগ্য হয়।" },
-];
 
 function LocationPicker({ position, setPosition }: { position: [number, number] | null; setPosition: (p: [number, number]) => void }) {
   useMapEvents({
@@ -164,7 +157,6 @@ export default function AddReportPage() {
 
   return (
     <div className="max-w-lg mx-auto px-4 py-6">
-      <OnboardingGuide pageKey="addreport" steps={ADDREPORT_ONBOARDING_STEPS} />
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}

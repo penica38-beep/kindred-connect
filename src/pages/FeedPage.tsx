@@ -7,13 +7,6 @@ import { CORRUPTION_TYPES } from "@/lib/constants";
 import { getDominantVote } from "@/lib/helpers";
 import type { Report } from "@/lib/types";
 import { FileText, Calendar, MapPin, CheckCircle, Vote, TrendingUp } from "lucide-react";
-import { OnboardingGuide } from "@/components/OnboardingGuide";
-
-const FEED_ONBOARDING_STEPS = [
-  { icon: "📋", title: "ফিড পেজে স্বাগতম!", description: "এখানে সব দুর্নীতির রিপোর্ট তালিকা আকারে দেখতে পাবেন।" },
-  { icon: "🔍", title: "ফিল্টার ও সর্ট", description: "উপরে ধরন অনুযায়ী ফিল্টার করুন। সাম্প্রতিক, ট্রেন্ডিং বা নিকটবর্তী অনুসারে সাজান।" },
-  { icon: "👆", title: "রিপোর্টে ক্লিক করুন", description: "যেকোনো কার্ডে ক্লিক করে বিস্তারিত দেখুন, ভোট দিন ও শেয়ার করুন।" },
-];
 
 const PAGE_SIZE = 10;
 
@@ -77,7 +70,6 @@ export default function FeedPage() {
 
   return (
     <div className="max-w-3xl mx-auto px-3 py-3">
-      <OnboardingGuide pageKey="feed" steps={FEED_ONBOARDING_STEPS} />
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
         <div className="bg-card rounded-xl border p-3 flex items-center gap-2.5 shadow-sm">
           <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">

@@ -1,16 +1,9 @@
 import { Mail, ExternalLink, Shield, Users, MapPin, Share2, CheckCircle, HelpCircle, XCircle, Megaphone, Eye, Newspaper, AlertTriangle, Globe, Heart, Scale, BookOpen, MessageCircle } from "lucide-react";
 import { CORRUPTION_TYPES } from "@/lib/constants";
-import { OnboardingGuide } from "@/components/OnboardingGuide";
-
-const INFO_ONBOARDING_STEPS = [
-  { icon: "ℹ️", title: "তথ্য পেজ", description: "এখানে 'চোর কই' সম্পর্কে সব তথ্য, ভোটিং সিস্টেম, গোপনীয়তা নীতি ও FAQ পাবেন।" },
-  { icon: "📖", title: "কিভাবে কাজ করে", description: "নিচে স্ক্রল করে জানুন কিভাবে রিপোর্ট, ভোট ও ভেরিফিকেশন কাজ করে।" },
-];
 
 export default function InfoPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 space-y-8">
-      <OnboardingGuide pageKey="info" steps={INFO_ONBOARDING_STEPS} />
 
       <Section icon={<Megaphone className="w-5 h-5 text-primary" />} title="'চোর কই' কী?">
         <p className="text-sm text-foreground leading-relaxed">
