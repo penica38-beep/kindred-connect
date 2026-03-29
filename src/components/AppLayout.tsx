@@ -15,7 +15,7 @@ export function TopNav() {
   return (
     <header className="bg-primary text-primary-foreground h-14 flex items-center px-4 shadow-lg z-50 sticky top-0">
       <div className="flex items-center gap-2.5 flex-1">
-        <img src="/logo.jpg" alt="চোর কই" className="h-8 w-8 rounded-lg object-cover shadow-sm" />
+        <img src="/logo.jpg" alt="চোর কই" className="h-8 w-8 object-cover" />
         <h1 className="font-display font-bold text-lg tracking-tight">চোর কই</h1>
       </div>
       {canInstall && (
@@ -62,16 +62,7 @@ export function DesktopSidebar() {
 
   return (
     <aside className="hidden md:flex flex-col w-56 bg-card border-r fixed top-14 bottom-0 z-40">
-      <div className="p-4 border-b">
-        <div className="flex items-center gap-2">
-          <img src="/favicon.png" alt="চোর কই" className="w-8 h-8 rounded-lg" />
-          <div>
-            <p className="text-xs font-bold font-display text-foreground">চোর কই</p>
-            <p className="text-[10px] text-muted-foreground">দুর্নীতি রিপোর্টিং</p>
-          </div>
-        </div>
-      </div>
-      <nav className="flex flex-col gap-1 p-3 pt-3">
+      <nav className="flex flex-col gap-1 p-3 pt-4">
         {navItems.map((item) => {
           const isActive = item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to);
           const Icon = item.icon;
