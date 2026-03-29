@@ -185,7 +185,7 @@ export default function InfoPage() {
           </a>
           <a href="https://www.facebook.com/ridoan.zisan" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 text-sm text-primary hover:underline">
             <ExternalLink className="w-4 h-4 text-muted-foreground" />
-            facebook.com/ridoan.zisan
+            Facebook
           </a>
         </div>
       </div>

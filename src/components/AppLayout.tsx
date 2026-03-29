@@ -1,6 +1,7 @@
 import { NavLink as RouterNavLink, useLocation } from "react-router-dom";
 import { Map, ListFilter, PlusCircle, Info } from "lucide-react";
 import { useInstallPWA } from "@/hooks/useInstallPWA";
+import { ThiefAnimation } from "./ThiefAnimation";
 
 const navItems = [
   { to: "/", icon: Map, label: "ম্যাপ" },
@@ -13,9 +14,10 @@ export function TopNav() {
   const { canInstall, install } = useInstallPWA();
 
   return (
-    <header className="bg-primary text-primary-foreground h-12 flex items-center px-4 shadow-md z-50 sticky top-0">
-      <div className="flex items-center gap-2 flex-1">
-        <img src="/logo.jpg" alt="Chor Koi Logo" className="h-7" />
+    <header className="bg-primary text-primary-foreground h-12 flex items-center px-4 shadow-md z-50 sticky top-0 overflow-hidden relative">
+      <ThiefAnimation />
+      <div className="flex items-center gap-2 flex-1 relative z-20">
+        <img src="/logo.jpg" alt="Chor Koi" className="h-7" />
         <h1 className="font-display font-bold text-lg tracking-tight">চোর কই</h1>
       </div>
       {canInstall && (
