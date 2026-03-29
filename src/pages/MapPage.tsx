@@ -21,7 +21,7 @@ L.Icon.Default.mergeOptions({
 });
 
 function createDropPinIcon(dominant: string, icon: string) {
-  const color = dominant === "truth" ? "#28A745" : dominant === "fake" ? "#DC3545" : dominant === "needProve" ? "#007BFF" : "#FF3B30";
+  const color = dominant === "truth" ? "#28A745" : dominant === "fake" ? "#DC3545" : dominant === "needProve" ? "#007BFF" : "#DC3545";
   return L.divIcon({
     className: "",
     html: `<div style="position:relative;width:36px;height:48px;">
