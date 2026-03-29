@@ -21,7 +21,7 @@ L.Icon.Default.mergeOptions({
 });
 
 function createDropPinIcon(dominant: string, icon: string) {
-  const color = dominant === "truth" ? "#28A745" : dominant === "fake" ? "#DC3545" : dominant === "needProve" ? "#007BFF" : "#FF3B30";
+  const color = dominant === "truth" ? "#28A745" : dominant === "fake" ? "#DC3545" : dominant === "needProve" ? "#007BFF" : "#DC3545";
   return L.divIcon({
     className: "",
     html: `<div style="position:relative;width:36px;height:48px;">
@@ -54,15 +54,24 @@ function FlyToLocation({ lat, lng, zoom }: { lat: number; lng: number; zoom: num
   return null;
 }
 
-function AutoOpenPopup({ reportId, markerRefs }: { reportId: string; markerRefs: React.MutableRefObject<Record<string, L.Marker>> }) {
+function AutoOpenPopup({ reportId, markerRefs, reports }: { reportId: string; markerRefs: React.MutableRefObject<Record<string, L.Marker>>; reports: Report[] }) {
   const map = useMap();
   useEffect(() => {
-    if (reportId && markerRefs.current[reportId]) {
-      setTimeout(() => {
-        markerRefs.current[reportId]?.openPopup();
-      }, 1200);
-    }
-  }, [reportId, map]);
+    if (!reportId) return;
+    // Retry until marker ref is available (reports may still be loading)
+    let attempts = 0;
+    const interval = setInterval(() => {
+      attempts++;
+      if (markerRefs.current[reportId]) {
+        clearInterval(interval);
+        setTimeout(() => {
+          markerRefs.current[reportId]?.openPopup();
+        }, 300);
+      }
+      if (attempts > 30) clearInterval(interval);
+    }, 200);
+    return () => clearInterval(interval);
+  }, [reportId, map, reports.length]);
   return null;
 }
 
@@ -293,7 +302,7 @@ export default function MapPage() {
         <MapClickHandler onMapClick={handleMapClick} />
         <UserLocationMarker />
         {flyTo && <FlyToLocation lat={flyTo.lat} lng={flyTo.lng} zoom={flyTo.zoom} />}
-        {targetReportId && <AutoOpenPopup reportId={targetReportId} markerRefs={markerRefs} />}
+        {targetReportId && <AutoOpenPopup reportId={targetReportId} markerRefs={markerRefs} reports={filtered} />}
 
         <HeatmapLayer points={heatmapPoints} enabled={showHeatmap} />
 
