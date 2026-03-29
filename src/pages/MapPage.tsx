@@ -302,7 +302,7 @@ export default function MapPage() {
         <MapClickHandler onMapClick={handleMapClick} />
         <UserLocationMarker />
         {flyTo && <FlyToLocation lat={flyTo.lat} lng={flyTo.lng} zoom={flyTo.zoom} />}
-        {targetReportId && <AutoOpenPopup reportId={targetReportId} markerRefs={markerRefs} />}
+        {targetReportId && <AutoOpenPopup reportId={targetReportId} markerRefs={markerRefs} reports={filtered} />}
 
         <HeatmapLayer points={heatmapPoints} enabled={showHeatmap} />
 
