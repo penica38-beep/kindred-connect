@@ -12,6 +12,15 @@ import type { Report } from "@/lib/types";
 import { useIsMobile } from "@/hooks/use-mobile";
 import HeatmapLayer from "@/components/map/HeatmapLayer";
 import PulseMarker from "@/components/map/PulseMarker";
+import { OnboardingGuide } from "@/components/OnboardingGuide";
+
+const MAP_ONBOARDING_STEPS = [
+  { icon: "🗺️", title: "ম্যাপে স্বাগতম!", description: "এখানে সারাদেশের দুর্নীতির রিপোর্ট ম্যাপে দেখতে পাবেন। পিনে ক্লিক করে বিস্তারিত জানুন।" },
+  { icon: "📍", title: "রিপোর্ট পিন", description: "প্রতিটি পিন একটি দুর্নীতির রিপোর্ট। রঙ দেখে বুঝুন — সবুজ: সত্য, নীল: প্রমাণ চাই, লাল: মিথ্যা।" },
+  { icon: "👆", title: "নতুন রিপোর্ট", description: "ম্যাপের যেকোনো জায়গায় ক্লিক করে সেখানে দুর্নীতি রিপোর্ট করুন। অথবা নিচের + বাটন চাপুন।" },
+  { icon: "🔍", title: "ফিল্টার ও হিটম্যাপ", description: "ডানদিকের বাটনগুলো দিয়ে ধরন অনুযায়ী ফিল্টার করুন ও হিটম্যাপ চালু করুন।" },
+  { icon: "📡", title: "আপনার অবস্থান", description: "নিকটবর্তী বাটনে ক্লিক করলে আপনার কাছের রিপোর্ট দেখতে পাবেন। নীল বিন্দু আপনার অবস্থান।" },
+];
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -119,7 +128,7 @@ function ReportPopupContent({ report, navigate }: { report: Report; navigate: (p
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
         <AnonAvatar id={report.id} size={32} />
         <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={{ fontWeight: 600, fontSize: 12, color: "#FF3B30", margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+          <p style={{ fontWeight: 600, fontSize: 12, color: "#DC3545", margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
             {anonName}
           </p>
           <p style={{ fontSize: 10, color: "#999", margin: 0 }}>{formatDate(report.createdAt)}</p>
@@ -130,7 +139,7 @@ function ReportPopupContent({ report, navigate }: { report: Report; navigate: (p
       </div>
 
       <div style={{ display: "flex", gap: 5, marginBottom: 8, flexWrap: "wrap" }}>
-        <span style={{ background: "#FF3B3012", color: "#FF3B30", padding: "3px 8px", borderRadius: 20, fontSize: 10, fontWeight: 600 }}>
+        <span style={{ background: "#FF3B3018", color: "#DC3545", padding: "3px 8px", borderRadius: 20, fontSize: 10, fontWeight: 600 }}>
           {getCorruptionIcon(report.corruptionType)} {report.corruptionType}
         </span>
         <span style={{ display: "flex", alignItems: "center", gap: 3, fontSize: 10, color: "#777", background: "#F5F5F5", padding: "3px 8px", borderRadius: 20 }}>
@@ -145,17 +154,14 @@ function ReportPopupContent({ report, navigate }: { report: Report; navigate: (p
       <div style={{ background: "#FAFAFA", border: "1px solid #EFEFEF", borderRadius: 10, padding: "8px 10px", marginBottom: 10 }}>
         <div style={{ display: "flex", gap: 5, marginBottom: 7 }}>
           <div style={{ flex: 1, background: "#EDFBF1", borderRadius: 8, padding: "5px 4px", textAlign: "center" }}>
-            <p style={{ margin: 0, fontSize: 14, lineHeight: 1 }}>✅</p>
             <p style={{ margin: "3px 0 0", fontSize: 13, fontWeight: 700, color: "#1a7f3c", lineHeight: 1 }}>{report.votes.truth}</p>
             <p style={{ margin: "2px 0 0", fontSize: 9, color: "#1a7f3c", opacity: 0.8 }}>সত্য</p>
           </div>
           <div style={{ flex: 1, background: "#EEF4FF", borderRadius: 8, padding: "5px 4px", textAlign: "center" }}>
-            <p style={{ margin: 0, fontSize: 14, lineHeight: 1 }}>🔍</p>
             <p style={{ margin: "3px 0 0", fontSize: 13, fontWeight: 700, color: "#1a56db", lineHeight: 1 }}>{report.votes.needProve}</p>
             <p style={{ margin: "2px 0 0", fontSize: 9, color: "#1a56db", opacity: 0.8 }}>প্রমাণ চাই</p>
           </div>
           <div style={{ flex: 1, background: "#FFF0F0", borderRadius: 8, padding: "5px 4px", textAlign: "center" }}>
-            <p style={{ margin: 0, fontSize: 14, lineHeight: 1 }}>❌</p>
             <p style={{ margin: "3px 0 0", fontSize: 13, fontWeight: 700, color: "#c0392b", lineHeight: 1 }}>{report.votes.fake}</p>
             <p style={{ margin: "2px 0 0", fontSize: 9, color: "#c0392b", opacity: 0.8 }}>মিথ্যা</p>
           </div>
@@ -178,7 +184,7 @@ function ReportPopupContent({ report, navigate }: { report: Report; navigate: (p
       <div style={{ display: "flex", gap: 6 }}>
         <button
           onClick={() => navigate(`/report/${report.id}`)}
-          style={{ flex: 1, background: "#FF3B30", color: "white", padding: "7px 10px", borderRadius: 9, fontSize: 12, fontWeight: 700, border: "none", cursor: "pointer", letterSpacing: "0.01em" }}
+          style={{ flex: 1, background: "#DC3545", color: "white", padding: "7px 10px", borderRadius: 9, fontSize: 12, fontWeight: 700, border: "none", cursor: "pointer", letterSpacing: "0.01em" }}
         >
           বিস্তারিত →
         </button>
@@ -328,26 +334,28 @@ export default function MapPage() {
         ))}
       </MapContainer>
 
+      <OnboardingGuide pageKey="map" steps={MAP_ONBOARDING_STEPS} />
+
       <div className="absolute top-2 left-2 right-14 z-[1000] flex gap-2 overflow-x-auto no-scrollbar">
-        <div className="bg-card/95 backdrop-blur-sm shadow-md rounded-lg border px-3 py-2 flex items-center gap-2 shrink-0">
+        <div className="bg-primary/10 backdrop-blur-sm shadow-md rounded-lg border border-primary/20 px-3 py-2 flex items-center gap-2 shrink-0">
           <FileText className="w-4 h-4 text-primary" />
           <div>
-            <p className="text-xs font-bold font-display leading-none">{reports.length}</p>
-            <p className="text-[10px] text-muted-foreground">রিপোর্ট</p>
+            <p className="text-xs font-bold font-display leading-none text-primary">{reports.length}</p>
+            <p className="text-[10px] text-primary/70">রিপোর্ট</p>
           </div>
         </div>
-        <div className="bg-card/95 backdrop-blur-sm shadow-md rounded-lg border px-3 py-2 flex items-center gap-2 shrink-0">
-          <CheckCircle className="w-4 h-4 text-vote-truth" />
+        <div className="bg-primary/10 backdrop-blur-sm shadow-md rounded-lg border border-primary/20 px-3 py-2 flex items-center gap-2 shrink-0">
+          <CheckCircle className="w-4 h-4 text-primary" />
           <div>
-            <p className="text-xs font-bold font-display leading-none">{verifiedCount}</p>
-            <p className="text-[10px] text-muted-foreground">যাচাইকৃত</p>
+            <p className="text-xs font-bold font-display leading-none text-primary">{verifiedCount}</p>
+            <p className="text-[10px] text-primary/70">যাচাইকৃত</p>
           </div>
         </div>
-        <div className="bg-card/95 backdrop-blur-sm shadow-md rounded-lg border px-3 py-2 flex items-center gap-2 shrink-0">
-          <AlertTriangle className="w-4 h-4 text-vote-fake" />
+        <div className="bg-primary/10 backdrop-blur-sm shadow-md rounded-lg border border-primary/20 px-3 py-2 flex items-center gap-2 shrink-0">
+          <AlertTriangle className="w-4 h-4 text-primary" />
           <div>
-            <p className="text-xs font-bold font-display leading-none">{totalVotes}</p>
-            <p className="text-[10px] text-muted-foreground">মোট ভোট</p>
+            <p className="text-xs font-bold font-display leading-none text-primary">{totalVotes}</p>
+            <p className="text-[10px] text-primary/70">মোট ভোট</p>
           </div>
         </div>
       </div>
