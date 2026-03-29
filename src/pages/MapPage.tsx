@@ -265,8 +265,14 @@ export default function MapPage() {
       (pos) => {
         setFlyTo({ lat: pos.coords.latitude, lng: pos.coords.longitude, zoom: 13 });
       },
-      () => alert("লোকেশন পাওয়া যায়নি"),
-      { enableHighAccuracy: true, timeout: 10000 }
+      (err) => {
+        if (err.code === err.PERMISSION_DENIED) {
+          alert("লোকেশন অনুমতি দিন। ব্রাউজার সেটিংস থেকে location permission চালু করুন।");
+        } else {
+          alert("লোকেশন পাওয়া যায়নি। GPS চালু আছে কিনা দেখুন।");
+        }
+      },
+      { enableHighAccuracy: true, maximumAge: 0 }
     );
   };
 

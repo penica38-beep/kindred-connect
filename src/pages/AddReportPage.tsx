@@ -63,9 +63,22 @@ export default function AddReportPage() {
   const [submitting, setSubmitting] = useState(false);
 
   const handleGPS = () => {
+    toast.info("GPS লোকেশন নেওয়া হচ্ছে...");
     navigator.geolocation.getCurrentPosition(
-      (pos) => setPosition([pos.coords.latitude, pos.coords.longitude]),
-      () => toast.error("লোকেশন পাওয়া যায়নি")
+      (pos) => {
+        setPosition([pos.coords.latitude, pos.coords.longitude]);
+        toast.success("GPS লোকেশন পাওয়া গেছে!");
+      },
+      (err) => {
+        if (err.code === err.PERMISSION_DENIED) {
+          toast.error("লোকেশন অনুমতি দিন। ব্রাউজার সেটিংস থেকে location permission চালু করুন।");
+        } else if (err.code === err.POSITION_UNAVAILABLE) {
+          toast.error("আপনার ডিভাইসে GPS পাওয়া যাচ্ছে না। ম্যাপ থেকে লোকেশন বেছে নিন।");
+        } else {
+          toast.error("লোকেশন পাওয়া যায়নি। ম্যাপ থেকে লোকেশন সিলেক্ট করুন।");
+        }
+      },
+      { enableHighAccuracy: true, maximumAge: 0 }
     );
   };
 
