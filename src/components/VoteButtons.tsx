@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { CheckCircle, HelpCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import type { VoteType } from "@/lib/types";
@@ -35,51 +34,106 @@ export function VoteButtons({ reportId, votes }: VoteButtonsProps) {
     }
   };
 
-  const buttons: { type: VoteType; label: string; icon: typeof CheckCircle; colorClass: string; activeClass: string }[] = [
+  const total = localVotes.truth + localVotes.needProve + localVotes.fake;
+  const truthPct = total ? Math.round((localVotes.truth / total) * 100) : 0;
+  const proofPct = total ? Math.round((localVotes.needProve / total) * 100) : 0;
+  const fakePct = total ? Math.round((localVotes.fake / total) * 100) : 0;
+
+  const buttons: {
+    type: VoteType;
+    label: string;
+    icon: typeof CheckCircle;
+    pct: number;
+    barColor: string;
+    activeText: string;
+    activeBg: string;
+    inactiveText: string;
+    inactiveBorder: string;
+  }[] = [
     {
       type: "truth",
       label: "সত্য",
       icon: CheckCircle,
-      colorClass: "border-vote-truth text-vote-truth hover:bg-vote-truth hover:text-vote-truth-foreground",
-      activeClass: "bg-vote-truth text-vote-truth-foreground",
+      pct: truthPct,
+      barColor: "bg-vote-truth",
+      activeText: "text-vote-truth-foreground",
+      activeBg: "bg-vote-truth",
+      inactiveText: "text-vote-truth",
+      inactiveBorder: "border-vote-truth/40 hover:border-vote-truth",
     },
     {
       type: "needProve",
       label: "প্রমাণ চাই",
       icon: HelpCircle,
-      colorClass: "border-vote-proof text-vote-proof hover:bg-vote-proof hover:text-vote-proof-foreground",
-      activeClass: "bg-vote-proof text-vote-proof-foreground",
+      pct: proofPct,
+      barColor: "bg-vote-proof",
+      activeText: "text-vote-proof-foreground",
+      activeBg: "bg-vote-proof",
+      inactiveText: "text-vote-proof",
+      inactiveBorder: "border-vote-proof/40 hover:border-vote-proof",
     },
     {
       type: "fake",
       label: "মিথ্যা",
       icon: XCircle,
-      colorClass: "border-vote-fake text-vote-fake hover:bg-vote-fake hover:text-vote-fake-foreground",
-      activeClass: "bg-vote-fake text-vote-fake-foreground",
+      pct: fakePct,
+      barColor: "bg-vote-fake",
+      activeText: "text-vote-fake-foreground",
+      activeBg: "bg-vote-fake",
+      inactiveText: "text-vote-fake",
+      inactiveBorder: "border-vote-fake/40 hover:border-vote-fake",
     },
   ];
 
   return (
-    <div className="flex gap-1.5 w-full">
+    <div className="space-y-2 w-full">
       {buttons.map((b) => {
         const isActive = voted === b.type;
         const Icon = b.icon;
         return (
-          <motion.button
+          <button
             key={b.type}
-            whileTap={{ scale: 0.93 }}
             onClick={(e) => handleVote(b.type, e)}
             disabled={!!voted}
-            className={`flex-1 flex items-center justify-center gap-1 px-1.5 py-1.5 rounded-full border text-xs font-medium transition-colors whitespace-nowrap ${
-              isActive ? b.activeClass : voted ? "opacity-50 border-border text-muted-foreground cursor-default" : b.colorClass
+            className={`relative w-full flex items-center gap-2.5 px-4 py-3 rounded-xl border-2 text-sm font-semibold transition-all overflow-hidden ${
+              isActive
+                ? `${b.activeBg} ${b.activeText} border-transparent shadow-md`
+                : voted
+                ? "opacity-40 border-border text-muted-foreground cursor-default"
+                : `${b.inactiveText} ${b.inactiveBorder} bg-card hover:shadow-sm`
             }`}
           >
-            <Icon className="w-3.5 h-3.5 shrink-0" />
-            <span className="font-display">{b.label}</span>
-            <span className="text-[10px] opacity-80">({localVotes[b.type]})</span>
-          </motion.button>
+            {/* Percentage bar background */}
+            {voted && !isActive && (
+              <div
+                className={`absolute inset-y-0 left-0 ${b.barColor} opacity-10 transition-all duration-500`}
+                style={{ width: `${b.pct}%` }}
+              />
+            )}
+            {isActive && (
+              <div
+                className="absolute inset-y-0 left-0 bg-white/15 transition-all duration-500"
+                style={{ width: `${b.pct}%` }}
+              />
+            )}
+            <Icon className="w-5 h-5 shrink-0 relative z-10" />
+            <span className="font-display relative z-10 flex-1 text-left">{b.label}</span>
+            <span className="relative z-10 text-xs font-bold opacity-90">
+              {voted ? `${b.pct}%` : localVotes[b.type]}
+            </span>
+          </button>
         );
       })}
+      {voted && total > 0 && (
+        <div className="flex items-center gap-1.5">
+          <div className="flex-1 h-2 rounded-full overflow-hidden bg-muted flex">
+            {truthPct > 0 && <div className="bg-vote-truth transition-all duration-500" style={{ width: `${truthPct}%` }} />}
+            {proofPct > 0 && <div className="bg-vote-proof transition-all duration-500" style={{ width: `${proofPct}%` }} />}
+            {fakePct > 0 && <div className="bg-vote-fake transition-all duration-500" style={{ width: `${fakePct}%` }} />}
+          </div>
+          <span className="text-[10px] text-muted-foreground whitespace-nowrap">{total} ভোট</span>
+        </div>
+      )}
     </div>
   );
 }
