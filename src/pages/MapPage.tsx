@@ -261,22 +261,12 @@ export default function MapPage() {
   };
 
   const handleNearby = () => {
-    if (!navigator.geolocation) {
-      alert("আপনার ব্রাউজার লোকেশন সাপোর্ট করে না");
-      return;
-    }
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setFlyTo({ lat: pos.coords.latitude, lng: pos.coords.longitude, zoom: 13 });
       },
-      (err) => {
-        if (err.code === err.PERMISSION_DENIED) {
-          alert("লোকেশন অনুমতি দিন। ব্রাউজার সেটিংস থেকে লোকেশন অ্যাক্সেস চালু করুন।");
-        } else {
-          alert("লোকেশন পাওয়া যায়নি। আবার চেষ্টা করুন।");
-        }
-      },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+      () => alert("লোকেশন পাওয়া যায়নি"),
+      { enableHighAccuracy: true, timeout: 10000 }
     );
   };
 
@@ -322,25 +312,25 @@ export default function MapPage() {
       </MapContainer>
 
       <div className="absolute top-2 left-2 right-14 z-[1000] flex gap-2 overflow-x-auto no-scrollbar">
-        <div className="bg-white/95 backdrop-blur-sm shadow-md rounded-lg border border-red-200 px-3 py-2 flex items-center gap-2 shrink-0">
-          <FileText className="w-4 h-4 text-red-600" />
+        <div className="bg-card/95 backdrop-blur-sm shadow-md rounded-lg border px-3 py-2 flex items-center gap-2 shrink-0">
+          <FileText className="w-4 h-4 text-primary" />
           <div>
-            <p className="text-xs font-bold font-display leading-none text-red-700">{reports.length}</p>
-            <p className="text-[10px] text-gray-600 font-medium">রিপোর্ট</p>
+            <p className="text-xs font-bold font-display leading-none">{reports.length}</p>
+            <p className="text-[10px] text-muted-foreground">রিপোর্ট</p>
           </div>
         </div>
-        <div className="bg-white/95 backdrop-blur-sm shadow-md rounded-lg border border-emerald-200 px-3 py-2 flex items-center gap-2 shrink-0">
-          <CheckCircle className="w-4 h-4 text-emerald-600" />
+        <div className="bg-card/95 backdrop-blur-sm shadow-md rounded-lg border px-3 py-2 flex items-center gap-2 shrink-0">
+          <CheckCircle className="w-4 h-4 text-vote-truth" />
           <div>
-            <p className="text-xs font-bold font-display leading-none text-emerald-700">{verifiedCount}</p>
-            <p className="text-[10px] text-gray-600 font-medium">যাচাইকৃত</p>
+            <p className="text-xs font-bold font-display leading-none">{verifiedCount}</p>
+            <p className="text-[10px] text-muted-foreground">যাচাইকৃত</p>
           </div>
         </div>
-        <div className="bg-white/95 backdrop-blur-sm shadow-md rounded-lg border border-amber-200 px-3 py-2 flex items-center gap-2 shrink-0">
-          <TrendingUp className="w-4 h-4 text-amber-600" />
+        <div className="bg-card/95 backdrop-blur-sm shadow-md rounded-lg border px-3 py-2 flex items-center gap-2 shrink-0">
+          <AlertTriangle className="w-4 h-4 text-vote-fake" />
           <div>
-            <p className="text-xs font-bold font-display leading-none text-amber-700">{totalVotes}</p>
-            <p className="text-[10px] text-gray-600 font-medium">মোট ভোট</p>
+            <p className="text-xs font-bold font-display leading-none">{totalVotes}</p>
+            <p className="text-[10px] text-muted-foreground">মোট ভোট</p>
           </div>
         </div>
       </div>

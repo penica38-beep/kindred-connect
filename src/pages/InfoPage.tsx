@@ -3,16 +3,7 @@ import { CORRUPTION_TYPES } from "@/lib/constants";
 
 export default function InfoPage() {
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
-
-      {/* Hero */}
-      <div className="text-center space-y-3">
-        <img src="/favicon.png" alt="চোর কই" className="w-16 h-16 mx-auto rounded-2xl shadow-md" />
-        <h1 className="font-display font-bold text-2xl text-foreground">চোর কই</h1>
-        <p className="text-sm text-muted-foreground max-w-md mx-auto">
-          বাংলাদেশের প্রথম crowd-powered দুর্নীতি রিপোর্টিং প্ল্যাটফর্ম
-        </p>
-      </div>
+    <div className="max-w-2xl mx-auto px-4 py-8 space-y-8">
 
       <Section icon={<Megaphone className="w-5 h-5 text-primary" />} title="'চোর কই' কী?">
         <p className="text-sm text-foreground leading-relaxed">
@@ -47,7 +38,7 @@ export default function InfoPage() {
             { step: "শেয়ার করুন", desc: "সোশ্যাল মিডিয়ায় ভাইরাল করুন, সাংবাদিকদের নজরে আনুন।" },
           ].map((item, i) => (
             <div key={i} className="flex gap-3 items-start">
-              <div className="flex-shrink-0 w-8 h-8 rounded-xl bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shadow-sm">{i + 1}</div>
+              <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shadow-sm">{i + 1}</div>
               <div>
                 <p className="text-sm font-semibold text-foreground">{item.step}</p>
                 <p className="text-xs text-muted-foreground mt-0.5">{item.desc}</p>
@@ -81,7 +72,7 @@ export default function InfoPage() {
             desc="রিপোর্টটি মিথ্যা বা বানোয়াট মনে হলে।"
           />
         </div>
-        <p className="mt-3 text-xs text-muted-foreground bg-muted rounded-xl px-3 py-2.5">
+        <p className="mt-3 text-xs text-muted-foreground bg-muted rounded-lg px-3 py-2">
           প্রতিটি রিপোর্টে একজন ব্যবহারকারী একটিমাত্র ভোট দিতে পারবেন। ভোট দিতে কোনো অ্যাকাউন্ট বা লগইন লাগে না।
         </p>
       </Section>
@@ -89,7 +80,7 @@ export default function InfoPage() {
       <Section icon={<BookOpen className="w-5 h-5 text-primary" />} title="দুর্নীতির ধরন সমূহ">
         <div className="grid grid-cols-2 gap-2">
           {CORRUPTION_TYPES.map((t) => (
-            <div key={t.value} className="flex items-center gap-2 bg-muted/60 rounded-xl p-2.5 border border-border/50">
+            <div key={t.value} className="flex items-center gap-2 bg-muted/60 rounded-lg p-2.5 border border-border/50">
               <span className="text-lg">{t.icon}</span>
               <span className="text-xs font-medium text-foreground">{t.label}</span>
             </div>
@@ -105,7 +96,7 @@ export default function InfoPage() {
             { title: "কোনো অ্যাকাউন্ট নেই", desc: "সাইন আপ বা লগইন ছাড়াই রিপোর্ট করা যায়।" },
             { title: "নিরাপদ প্ল্যাটফর্ম", desc: "আপনার পরিচয় কখনো প্রকাশ পাবে না।" },
           ].map((item, i) => (
-            <div key={i} className="bg-muted/60 rounded-xl p-3 border border-border/50">
+            <div key={i} className="bg-muted/60 rounded-lg p-3 border border-border/50">
               <p className="text-xs font-semibold text-foreground">{item.title}</p>
               <p className="text-xs text-muted-foreground mt-0.5">{item.desc}</p>
             </div>
@@ -145,7 +136,7 @@ export default function InfoPage() {
             { q: "ভুল রিপোর্ট দিলে কি হবে?", a: "কমিউনিটি ভোটের মাধ্যমে মিথ্যা রিপোর্ট চিহ্নিত হয়। এডমিন মিথ্যা রিপোর্ট মুছে দিতে পারেন।" },
             { q: "অ্যাপটি কি ফ্রি?", a: "হ্যাঁ, সম্পূর্ণ বিনামূল্যে এবং সবার জন্য উন্মুক্ত।" },
           ].map((item, i) => (
-            <div key={i} className="bg-muted/40 rounded-xl p-3 border border-border/50">
+            <div key={i} className="bg-muted/40 rounded-lg p-3 border border-border/50">
               <p className="text-xs font-semibold text-foreground mb-1">❓ {item.q}</p>
               <p className="text-xs text-muted-foreground">{item.a}</p>
             </div>
@@ -182,7 +173,7 @@ export default function InfoPage() {
         </div>
       </Section>
 
-      <div className="rounded-xl border bg-card p-5 shadow-sm">
+      <div className="rounded-xl border bg-card p-5">
         <h2 className="font-display font-bold text-base mb-3 flex items-center gap-2">
           <Mail className="w-4 h-4 text-primary" />
           যোগাযোগ করুন
@@ -194,13 +185,12 @@ export default function InfoPage() {
           </a>
           <a href="https://www.facebook.com/ridoan.zisan" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 text-sm text-primary hover:underline">
             <ExternalLink className="w-4 h-4 text-muted-foreground" />
-            facebook.com/ridoan.zisan
+            Facebook
           </a>
         </div>
       </div>
 
       <div className="border-t pt-5 text-center text-xs text-muted-foreground">
-        <img src="/favicon.png" alt="চোর কই" className="w-8 h-8 mx-auto mb-2 rounded-lg opacity-60" />
         <p>
           Developed by{" "}
           <a href="https://ridoan-zisan.netlify.app" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold">
@@ -240,7 +230,7 @@ function VoteOption({
   icon: React.ReactNode; color: string; bg: string; label: string; desc: string;
 }) {
   return (
-    <div className={`flex items-start gap-2.5 rounded-xl border px-3 py-2.5 ${bg}`}>
+    <div className={`flex items-start gap-2.5 rounded-lg border px-3 py-2.5 ${bg}`}>
       <span className={`mt-0.5 ${color}`}>{icon}</span>
       <div>
         <p className={`text-sm font-semibold ${color}`}>{label}</p>
