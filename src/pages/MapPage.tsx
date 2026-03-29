@@ -261,12 +261,25 @@ export default function MapPage() {
   };
 
   const handleNearby = () => {
+    if (!navigator.geolocation) {
+      alert("আপনার ব্রাউজার জিপিএস সাপোর্ট করে না");
+      return;
+    }
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setFlyTo({ lat: pos.coords.latitude, lng: pos.coords.longitude, zoom: 13 });
       },
-      () => alert("লোকেশন পাওয়া যায়নি"),
-      { enableHighAccuracy: true, timeout: 10000 }
+      (err) => {
+        console.error("Geolocation error:", err);
+        if (err.code === 1) {
+          alert("লোকেশন অনুমতি দেওয়া হয়নি। ব্রাউজার সেটিংস থেকে লোকেশন অনুমতি দিন।");
+        } else if (err.code === 2) {
+          alert("লোকেশন পাওয়া যায়নি। আপনার ডিভাইসে GPS সক্রিয় আছে কিনা দেখুন।");
+        } else {
+          alert("লোকেশন পেতে সময় শেষ হয়ে গেছে। আবার চেষ্টা করুন।");
+        }
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
     );
   };
 
@@ -312,25 +325,31 @@ export default function MapPage() {
       </MapContainer>
 
       <div className="absolute top-2 left-2 right-14 z-[1000] flex gap-2 overflow-x-auto no-scrollbar">
-        <div className="bg-card/95 backdrop-blur-sm shadow-md rounded-lg border px-3 py-2 flex items-center gap-2 shrink-0">
-          <FileText className="w-4 h-4 text-primary" />
+        <div className="bg-gradient-to-br from-primary/90 to-primary backdrop-blur-sm shadow-lg rounded-xl border border-primary/20 px-3.5 py-2.5 flex items-center gap-2.5 shrink-0">
+          <div className="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center">
+            <FileText className="w-3.5 h-3.5 text-primary-foreground" />
+          </div>
           <div>
-            <p className="text-xs font-bold font-display leading-none">{reports.length}</p>
-            <p className="text-[10px] text-muted-foreground">রিপোর্ট</p>
+            <p className="text-sm font-bold font-display leading-none text-primary-foreground">{reports.length}</p>
+            <p className="text-[10px] text-primary-foreground/70 font-medium">রিপোর্ট</p>
           </div>
         </div>
-        <div className="bg-card/95 backdrop-blur-sm shadow-md rounded-lg border px-3 py-2 flex items-center gap-2 shrink-0">
-          <CheckCircle className="w-4 h-4 text-vote-truth" />
+        <div className="bg-gradient-to-br from-emerald-500/90 to-green-600/90 backdrop-blur-sm shadow-lg rounded-xl border border-emerald-400/20 px-3.5 py-2.5 flex items-center gap-2.5 shrink-0">
+          <div className="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center">
+            <CheckCircle className="w-3.5 h-3.5 text-white" />
+          </div>
           <div>
-            <p className="text-xs font-bold font-display leading-none">{verifiedCount}</p>
-            <p className="text-[10px] text-muted-foreground">যাচাইকৃত</p>
+            <p className="text-sm font-bold font-display leading-none text-white">{verifiedCount}</p>
+            <p className="text-[10px] text-white/70 font-medium">যাচাইকৃত</p>
           </div>
         </div>
-        <div className="bg-card/95 backdrop-blur-sm shadow-md rounded-lg border px-3 py-2 flex items-center gap-2 shrink-0">
-          <AlertTriangle className="w-4 h-4 text-vote-fake" />
+        <div className="bg-gradient-to-br from-amber-500/90 to-orange-600/90 backdrop-blur-sm shadow-lg rounded-xl border border-amber-400/20 px-3.5 py-2.5 flex items-center gap-2.5 shrink-0">
+          <div className="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center">
+            <TrendingUp className="w-3.5 h-3.5 text-white" />
+          </div>
           <div>
-            <p className="text-xs font-bold font-display leading-none">{totalVotes}</p>
-            <p className="text-[10px] text-muted-foreground">মোট ভোট</p>
+            <p className="text-sm font-bold font-display leading-none text-white">{totalVotes}</p>
+            <p className="text-[10px] text-white/70 font-medium">মোট ভোট</p>
           </div>
         </div>
       </div>
